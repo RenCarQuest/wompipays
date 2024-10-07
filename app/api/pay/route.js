@@ -16,6 +16,7 @@ export async function GET(request) {
   const formHtml = `
     <form>
       <script
+          data-render="button"
         data-signature:integrity="${hash}"
         src="https://checkout.wompi.co/widget.js"
         data-public-key="${WOMPI_PUB}"
