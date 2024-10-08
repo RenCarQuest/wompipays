@@ -55,7 +55,7 @@ export default function Home() {
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-2xl sm:text-3xl h-20 sm:h-24 px-8 sm:px-10"
             onClick={handlePayment}
           >
-            Pagar 😈
+            Pagare 😈
           </button>
         </div>
         {paymentButton && <div id="payment-form" />}
