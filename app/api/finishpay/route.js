@@ -11,9 +11,10 @@ export async function POST(request) {
   // Leer el cuerpo de la petición
   const event = await request.json();
   console.log("Event:", event);
+  console.log("Event DATA:", event.data);
 
   // Generar el string concatenado para el hash
-  const stringConcatenado = `${event.transaction.id}${event.transaction.status}${event.transaction.amount_in_cents}`;
+  const stringConcatenado = `${event.data.transaction.id}${event.data.transaction.status}${event.data.transaction.amount_in_cents}`;
   console.log("String Concatenado:", stringConcatenado);
 
   // Concatenar con el timestamp del evento
