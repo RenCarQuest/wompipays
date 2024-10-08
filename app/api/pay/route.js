@@ -10,6 +10,8 @@ export async function GET(request) {
   const amount = 2490000; // Example amount in cents
   const currency = "COP"; // Example currency
 
+  console.log(invoice);
+
   const concatenatedString = `${invoice}${amount}${currency}${WOMPI_INTEGRITY}`;
   const hash = generateSHA256Hash(concatenatedString);
 
