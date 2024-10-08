@@ -1,6 +1,13 @@
 "use client";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [paymentButton, setPaymentButton] = useState(null);
+
+  useEffect(() => {
+    handlePayment();
+  }, []);
+
   const handlePayment = async () => {
     try {
       const response = await fetch("/api/pay", {
@@ -9,15 +16,37 @@ export default function Home() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const data = await response.text();
-      const newWindow = window.open();
-      newWindow.document.write(data);
-      newWindow.document.close();
+      const data = await response.json();
+
+      console.warn(data);
+
+      setPaymentButton(data);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
       alert("Payment failed!");
     }
   };
+
+  useEffect(() => {
+    console.warn(paymentButton);
+
+    if (paymentButton) {
+      const script = document.createElement("script");
+      script.src = paymentButton.src;
+      script.setAttribute("data-render", paymentButton.render);
+      script.setAttribute("data-signature:integrity", paymentButton.signature);
+      script.setAttribute("data-public-key", paymentButton.publickey);
+      script.setAttribute("data-currency", paymentButton.datacurrency);
+      script.setAttribute(
+        "data-amount-in-cents",
+        paymentButton.dataamountincents
+      );
+      script.setAttribute("data-reference", paymentButton.datareference);
+      console.warn(script);
+      document.getElementById("payment-form").appendChild(script);
+    }
+  }, [paymentButton]);
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -29,6 +58,7 @@ export default function Home() {
             Pagar 😈
           </button>
         </div>
+        {paymentButton && <div id="payment-form" />}
       </main>
     </div>
   );

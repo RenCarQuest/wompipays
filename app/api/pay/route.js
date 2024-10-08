@@ -13,27 +13,17 @@ export async function GET(request) {
   const concatenatedString = `${invoice}${amount}${currency}${WOMPI_INTEGRITY}`;
   const hash = generateSHA256Hash(concatenatedString);
 
-  const formHtml = `
-    <form>
-      <script
-          data-render="button"
-        data-signature:integrity="${hash}"
-        src="https://checkout.wompi.co/widget.js"
-        data-public-key="${WOMPI_PUB}"
-        data-currency="${currency}"
-        data-amount-in-cents="${amount}"
-        data-reference="${invoice}"
-      ></script>
-    </form>
-  `;
+  const res = {
+    render: "button",
+    signature: hash,
+    src: "https://checkout.wompi.co/widget.js",
+    publickey: WOMPI_PUB,
+    datacurrency: currency,
+    dataamountincents: amount,
+    datareference: invoice,
+  };
 
-  console.log(formHtml);
-
-  return new NextResponse(formHtml, {
-    headers: {
-      "Content-Type": "text/html",
-    },
-  });
+  return NextResponse.json(res);
 }
 
 function generateSecureInvoiceCode() {
